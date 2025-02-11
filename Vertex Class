@@ -1,0 +1,22 @@
+class Vertex:
+    def __init__(self, key):
+        self.key = key
+        self.connected_to = {}
+
+    def addNeighbor(self, neighbor, weight=0):
+        self.connected_to[neighbor] = weight
+
+    def getKey(self):
+        return self.key
+
+    def getNeighbors(self):
+        return self.connected_to.keys()
+
+    def getWeight(self, neighbor):
+        return self.connected_to.get(neighbor, None)
+
+    def __str__(self):
+        neighbors = []
+        for neighbor in self.connected_to:
+            neighbors.append(neighbor.key)
+        return str(self.key) + " connected to: " + str(neighbors)
