@@ -1,0 +1,63 @@
+
+class Graph:
+    def __init__(self):
+        self.vert_list = {}
+        self.num_vertices = 0
+
+    def addVertex(self, key):
+        if key not in self.vert_list:
+            self.num_vertices += 1
+            new_vertex = Vertex(key)
+            self.vert_list[key] = new_vertex
+            return new_vertex
+
+    def addEdge(self, key1, key2, weight=0):
+        if key1 not in self.vert_list:
+            self.addVertex(key1)
+        if key2 not in self.vert_list:
+            self.addVertex(key2)
+            
+        self.vert_list[key1].addNeighbor(self.vert_list[key2], weight)
+
+    def getVertices(self):
+        return self.vert_list.keys()
+
+    def __contains__(self, key):
+        return key in self.vert_list
+
+    def __iter__(self):
+        return iter(self.vert_list.values())
+
+    def bfs(self, start, end):
+        if start not in self.vert_list or end not in self.vert_list:
+            return None
+
+        queue = [(self.vert_list[start], [start])]
+        paths = []
+
+        while queue:
+            current_vertex, path = queue.pop(0)
+
+            for neighbor in current_vertex.getNeighbors():
+                if neighbor.key == end:
+                    paths.append(path + [end])
+                elif neighbor.key not in path:
+                    queue.append((neighbor, path + [neighbor.key]))
+
+        return paths
+    def shortPath(self, start, end):
+        if start not in self.vert_list or end not in self.vert_list:
+            return None
+    
+        queue = [(self.vert_list[start], [start])]
+    
+        while queue:
+            current_vertex, path = queue.pop(0)
+    
+            for neighbor in current_vertex.getNeighbors():
+                if neighbor.key == end:
+                    return path + [end]  
+                elif neighbor.key not in path:
+                    queue.append((neighbor, path + [neighbor.key]))
+    
+        return None
