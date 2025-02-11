@@ -1,0 +1,27 @@
+
+def buildGraphBuckets(fileName, length):
+    buckets = {}
+    word_list = set()
+
+    with open(fileName, 'r') as file:
+        for word in file:
+            word = word.strip()
+            if len(word) == length:
+                word_list.add(word)
+                for i in range(length):
+                    bucket = word[:i] + '_' + word[i+1:]
+                    if bucket not in buckets:
+                        buckets[bucket] = set()
+                    buckets[bucket].add(word)
+    
+    
+    graph = Graph()
+    for bucket in buckets:
+        bucket_words = list(buckets[bucket])
+        for i in range(len(bucket_words)):
+            for j in range(i + 1, len(bucket_words)):
+                graph.addEdge(bucket_words[i], bucket_words[j])
+                graph.addEdge(bucket_words[j], bucket_words[i])
+
+    return graph
+
